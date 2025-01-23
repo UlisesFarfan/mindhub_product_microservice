@@ -19,6 +19,8 @@ public interface ProductService {
 
     GetProductDTO getDTOById(Long id) throws GenericException;
 
+    void patchStock(Long id, Integer quantity) throws GenericException;
+
     GetProductDTO update(Long id, UpdateProductDTO product) throws GenericException;
 
     void delete(Long id) throws GenericException;

@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
             ProductModel savedProduct = productRepository.save(productModel);
             return new GetProductDTO(savedProduct);
         } catch (Exception e) {
-            throw new GenericException("something went wrong");
+            throw new GenericException(e.getMessage());
         }
     }
 
@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             return productRepository.save(product);
         } catch (Exception e) {
-            throw new GenericException("something went wrong");
+            throw new GenericException(e.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             return productRepository.findAll();
         } catch (Exception e) {
-            throw new GenericException("something went wrong");
+            throw new GenericException(e.getMessage());
         }
     }
 
@@ -56,7 +56,19 @@ public class ProductServiceImpl implements ProductService {
         try {
             return new GetProductDTO(getById(id));
         } catch (Exception e) {
-            throw new GenericException("something went wrong");
+            throw new GenericException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void patchStock(Long id, Integer quantity) throws GenericException {
+        try {
+            ProductModel productModel = productRepository.findById(id)
+                    .orElseThrow(() -> new GenericException("product not found"));
+            productModel.setStock(productModel.getStock() - quantity);
+            productRepository.save(productModel);
+        } catch (Exception e) {
+            throw new GenericException(e.getMessage());
         }
     }
 
@@ -72,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
             productModel = productRepository.save(productModel);
             return new GetProductDTO(productModel);
         } catch (Exception e) {
-            throw new GenericException("something went wrong");
+            throw new GenericException(e.getMessage());
         }
     }
 
@@ -81,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             productRepository.deleteById(id);
         } catch (Exception e) {
-            throw new GenericException("something went wrong");
+            throw new GenericException(e.getMessage());
         }
     }
 }

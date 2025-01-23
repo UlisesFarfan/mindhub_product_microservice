@@ -27,6 +27,18 @@ public class ProductController {
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<GetProductDTO> getOneDto(@PathVariable Long id) {
+        GetProductDTO productDTO = productService.getDTOById(id);
+        return new ResponseEntity<>(productDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/stock/{id}")
+    public ResponseEntity<?> patchStock(@PathVariable Long id, @RequestParam(required = true) Integer quantity)  {
+        productService.patchStock(id, quantity);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @PostMapping("/")
     public ResponseEntity<GetProductDTO> create(@RequestBody PostProductDTO product){
         if (product.name() == null || product.description() == null || product.price() == null || product.stock() == null) {
