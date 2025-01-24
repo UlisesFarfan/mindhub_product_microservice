@@ -65,6 +65,12 @@ public class ProductServiceImpl implements ProductService {
         try {
             ProductModel productModel = productRepository.findById(id)
                     .orElseThrow(() -> new GenericException("product not found"));
+            if (quantity < 1) {
+                throw new GenericException("invalid quantity");
+            }
+            if (productModel.getStock() < quantity) {
+                throw new GenericException("insufficient stock");
+            }
             productModel.setStock(productModel.getStock() - quantity);
             productRepository.save(productModel);
         } catch (Exception e) {
