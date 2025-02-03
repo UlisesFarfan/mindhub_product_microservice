@@ -34,8 +34,8 @@ public class ProductController {
     }
 
     @PutMapping("/stock/{id}")
-    public ResponseEntity<?> patchStock(@PathVariable Long id, @RequestParam(required = true) Integer quantity)  {
-        productService.patchStock(id, quantity);
+    public ResponseEntity<?> patchStock(@PathVariable Long id, @RequestParam(required = true) Integer quantity,  @RequestParam(required = true) String type)  {
+        productService.patchStock(id, quantity, type);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

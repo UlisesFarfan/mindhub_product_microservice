@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -61,17 +62,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void patchStock(Long id, Integer quantity) throws GenericException {
+    public void patchStock(Long id, Integer quantity, String type) throws GenericException {
         try {
             ProductModel productModel = productRepository.findById(id)
                     .orElseThrow(() -> new GenericException("product not found"));
             if (quantity < 1) {
                 throw new GenericException("invalid quantity");
             }
-            if (productModel.getStock() < quantity) {
+            if (Objects.equals(type, "res") && productModel.getStock() < quantity) {
                 throw new GenericException("insufficient stock");
             }
-            productModel.setStock(productModel.getStock() - quantity);
+            productModel.setStock(Objects.equals(type, "sum") ? productModel.getStock() + quantity : productModel.getStock() - quantity);
             productRepository.save(productModel);
         } catch (Exception e) {
             throw new GenericException(e.getMessage());
